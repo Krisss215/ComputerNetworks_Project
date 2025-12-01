@@ -1,16 +1,16 @@
 import socket
 import threading
 
-# Server Configuration
+
 HOST = '127.0.0.1'
 PORT = 5555
-clients = {}  # Dictionary to map {username: socket}
+clients = {}
 
 
 def handle_client(client_socket):
     username = None
     try:
-        # The first message sent by the client MUST be their username
+
         username = client_socket.recv(1024).decode('utf-8')
         clients[username] = client_socket
         print(f"[NEW CONNECTION] {username} connected.")
@@ -21,7 +21,7 @@ def handle_client(client_socket):
             if not message:
                 break
 
-            # Logic to route message: "Bob:Hello" sends "Hello" to Bob
+
             if ":" in message:
                 target_name, msg_content = message.split(":", 1)
                 if target_name in clients:
@@ -44,7 +44,7 @@ def handle_client(client_socket):
 def start_server():
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.bind((HOST, PORT))
-    server.listen(5)  # Support at least 5 clients [cite: 49]
+    server.listen(5)
     print(f"[STARTING] Server listening on {HOST}:{PORT}")
 
     while True:

@@ -1,12 +1,11 @@
 import socket
 import threading
 
-# Client Configuration
 HOST = '127.0.0.1'
 PORT = 5555
 
 def receive_messages(client_socket):
-    """Listens for incoming messages from the server."""
+
     while True:
         try:
             message = client_socket.recv(1024).decode('utf-8')
@@ -27,15 +26,12 @@ def start_client():
         print("Could not connect to server. Is it running?")
         return
 
-    # 1. Send Username
     username = input("Enter your username: ")
     client.send(username.encode('utf-8'))
 
-    # 2. Start a thread to listen for incoming messages
     receive_thread = threading.Thread(target=receive_messages, args=(client,))
     receive_thread.start()
 
-    # 3. Main loop to send messages
     print("Format to chat -> TARGET_NAME:MESSAGE (e.g., alice:hello)")
     while True:
         msg = input("Your message: ")
