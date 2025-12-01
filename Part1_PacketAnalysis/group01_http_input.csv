@@ -1,0 +1,12 @@
+msg_id,app_protocol,src_app,dst_app,message,timestamp
+1,HTTP,browser_client,web_server,SYN,0.000
+2,HTTP,web_server,browser_client,SYN-ACK,0.002
+3,HTTP,browser_client,web_server,ACK,0.003
+4,HTTP,browser_client,web_server,GET /index.html HTTP/1.1,0.015
+5,HTTP,web_server,browser_client,HTTP/1.1 200 OK,0.025
+6,HTTP,web_server,browser_client,DATA: <html>Welcome to the Chat App</html>,0.026
+7,HTTP,browser_client,web_server,ACK,0.028
+8,HTTP,browser_client,web_server,FIN,0.050
+9,HTTP,web_server,browser_client,ACK,0.051
+10,HTTP,web_server,browser_client,FIN,0.055
+11,HTTP,browser_client,web_server,ACK,0.056
