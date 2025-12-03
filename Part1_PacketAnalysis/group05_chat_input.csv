@@ -1,0 +1,7 @@
+msg_id,app_protocol,src_app,dst_app,message,timestamp
+1,CHAT,client_A,server,HELLO_SERVER,0.1
+2,CHAT,client_A,server,CONNECT client_B,0.5
+3,CHAT,server,client_A,CONNECTED_TO client_B,0.6
+4,CHAT,client_A,client_B,How are you?,1.0
+5,CHAT,client_B,client_A,I am good thanks,1.2
+6,CHAT,client_A,client_B,Bye!,2.0

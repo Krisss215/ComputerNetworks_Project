@@ -1,45 +1,58 @@
 import socket
 import threading
+import sys
 
+# Configuration
 HOST = '127.0.0.1'
-PORT = 5555
+PORT = 55556  # <--- CHANGED PORT to match Server
 
-def receive_messages(client_socket):
 
+def receive_messages(sock):
     while True:
         try:
-            message = client_socket.recv(1024).decode('utf-8')
-            if not message:
-                break
-            # Print the new message and re-print the prompt so it looks clean
-            print(f"\n{message}\nYour message: ", end="")
+            msg = sock.recv(1024).decode('utf-8')
+            if not msg: break
+            print(f"\n{msg}\n> ", end="")
         except:
-            print("[ERROR] Connection lost.")
-            client_socket.close()
-            break
+            print("Disconnected.")
+            sock.close()
+            sys.exit()
+
 
 def start_client():
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
         client.connect((HOST, PORT))
-    except ConnectionRefusedError:
-        print("Could not connect to server. Is it running?")
+    except:
+        print("Could not connect. Is the server running?")
         return
 
-    username = input("Enter your username: ")
-    client.send(username.encode('utf-8'))
+    # Login Logic
+    try:
+        msg = client.recv(1024).decode('utf-8')
+        if msg == "ENTER_NAME":
+            client.send(input("Enter Username: ").encode('utf-8'))
 
-    receive_thread = threading.Thread(target=receive_messages, args=(client,))
-    receive_thread.start()
+        msg = client.recv(1024).decode('utf-8')
+        if msg == "WHO_TO_CONNECT":
+            client.send(input("Chat with who?: ").encode('utf-8'))
 
-    print("Format to chat -> TARGET_NAME:MESSAGE (e.g., alice:hello)")
+        print(client.recv(1024).decode('utf-8'))
+    except:
+        return
+
+    # Start Chatting
+    threading.Thread(target=receive_messages, args=(client,), daemon=True).start()
+
     while True:
-        msg = input("Your message: ")
-        if msg.lower() == 'exit':
+        try:
+            msg = input("> ")
+            if msg == 'quit': break
+            client.send(msg.encode('utf-8'))
+        except:
             break
-        client.send(msg.encode('utf-8'))
-
     client.close()
+
 
 if __name__ == "__main__":
     start_client()
