@@ -5,7 +5,7 @@ from tkinter import scrolledtext, simpledialog, messagebox
 
 # --- CONFIGURATION ---
 HOST = '127.0.0.1'
-PORT = 5555
+PORT = 5556  # UPDATED TO 5556
 
 
 class ChatClientGUI:
@@ -19,7 +19,7 @@ class ChatClientGUI:
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.sock.connect((HOST, PORT))
         except ConnectionRefusedError:
-            messagebox.showerror("Error", "Could not connect to server. Is it running?")
+            messagebox.showerror("Error", f"Could not connect to server on port {PORT}. Is it running?")
             master.destroy()
             return
 
